@@ -16,7 +16,7 @@ import sys
 import os
 import random
 import full_scramble
-import utils
+from utils import *
 
 network_model = sys.argv[1]
 recognition_task = sys.argv[2]
@@ -370,7 +370,7 @@ for shuffle_num in range(shuffle_start,shuffle_end+1):
 		# Save the Accuracies:
 		PATH_Accuracy = './results/' + folder_preamble + '/accuracies/' + network_model +'/' + run_id_str
 		create_path(PATH_Accuracy)
-		np.save(PATH_Accuracy '{}/Shuffle_{}.npy'.format(PATH_Accuracy, shuffle_num_str), MSE_Total)
+		np.save('{}/Shuffle_{}.npy'.format(PATH_Accuracy, shuffle_num_str), MSE_Total)
 
 
 
