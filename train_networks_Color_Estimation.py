@@ -16,6 +16,7 @@ import sys
 import os
 import random
 import full_scramble
+import utils
 
 network_model = sys.argv[1]
 recognition_task = sys.argv[2]
@@ -314,13 +315,17 @@ for shuffle_num in range(shuffle_start,shuffle_end+1):
 				if i % 20 == 19: # print every 2000 mini-batches
 					print('[%d,%5d] %s Loss: %.3f' % (epoch+1, i+1,network_model,running_loss/20.0))
 					running_loss = 0.0
+
 			# Save total loss
-			PATH_Loss = '../' + folder_preamble + '/loss/training/' + network_model + '/' + run_id_str + '/Shuffle_' + shuffle_num_str + '_' + epoch_str + '.npy'
-			np.save(PATH_Loss,total_loss)
+			PATH_Loss = './results/' + folder_preamble + '/loss/training/' + network_model + '/' + run_id_str
+			create_path(PATH_Loss)
+			np.save('{}/Shuffle_{}_{}.npy'.format(PATH_Loss, shuffle_num_str, epoch_str), total_loss)
 			# Save Network check points:
-			PATH_Network = '../' + folder_preamble + '/networks/' + network_model + '/' + run_id_str + '/Shuffle_' + shuffle_num_str + '_' + epoch_str + '.pth'
-			torch.save(net.state_dict(),PATH_Network)
-		print('Finished Training run:' + run_id_str)
+			PATH_Network = './results/' + folder_preamble + '/networks/' + network_model + '/' + run_id_str
+			create_path(PATH_Network)
+			torch.save(net.state_dict(), '{}/Shuffle_{}_{}.pth'.format(PATH_Network, shuffle_num_str, epoch_str))
+		print('Finished Training run {}'.format(run_id_str))
+
 		##########################################
 		# Now make predictions on whole dataset: #
 		##########################################
@@ -363,5 +368,20 @@ for shuffle_num in range(shuffle_start,shuffle_end+1):
 		#
 		print('MSE of Color Estimation-run_' + run_id_str + '_Shuffle_ ' + shuffle_num_str + ' on the 10000 test images: %f %%' % (MSE_Total))
 		# Save the Accuracies:
-		PATH_Accuracy = '../' + folder_preamble + '/accuracies/' + network_model +'/' + run_id_str + '/' + 'Shuffle_' + shuffle_num_str + '.npy'
-		np.save(PATH_Accuracy,MSE_Total)
+		PATH_Accuracy = './results/' + folder_preamble + '/accuracies/' + network_model +'/' + run_id_str
+		create_path(PATH_Accuracy)
+		np.save(PATH_Accuracy '{}/Shuffle_{}.npy'.format(PATH_Accuracy, shuffle_num_str), MSE_Total)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
