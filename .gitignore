@@ -2,8 +2,10 @@
 # To store all experiment data locally only.
 /data
 /results
+/plots
 Makefile
 *.pdf
+*.out
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
