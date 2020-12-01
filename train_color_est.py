@@ -189,8 +189,12 @@ if __name__ == '__main__':
 
             # Save weights
             if 'cnn' in args.model:
-                fc_weights = model.fc[0].weight.detach().numpy()
-                conv_weights = model.conv[0].weight.detach().numpy()
+                if use_cuda:
+                    fc_weights = model.fc[0].weight.detach().cpu().numpy()
+                    conv_weights = model.conv[0].weight.detach().cpu().numpy()
+                else:
+                    fc_weights = model.fc[0].weight.detach().numpy()
+                    conv_weights = model.conv[0].weight.detach().numpy()
                 print('\nConv kernel:')
                 print(conv_weights)
                 print('\nFC weights:')
@@ -199,16 +203,19 @@ if __name__ == '__main__':
                     np.save('{}/weights/conv_{}.npy'.format(logdir, epoch), conv_weights)
                     np.save('{}/weights/fc_{}.npy'.format(logdir, epoch), fc_weights)
             elif 'fc' in args.model:
-                fc_weights = model.fc[0].weight.detach().numpy()
+                if use_cuda:
+                    fc_weights = model.fc[0].weight.detach().cpu().numpy()
+                else:
+                    fc_weights = model.fc[0].weight.detach().numpy()
                 print('\nFC weights:')
                 print(fc_weights)
                 if args.log:
                     np.save('{}/weights/fc_{}.npy'.format(logdir, epoch), fc_weights)
 
             # Test
-            # train_loss = test(model, device, train_loader, trainset=True)
-            # experiment.log_metric("train_loss", train_loss, step=epoch)
-            # train_losses.append(train_loss)
+            train_loss = test(model, device, train_loader, trainset=True)
+            experiment.log_metric("train_loss", train_loss, step=epoch)
+            train_losses.append(train_loss)
             test_loss = test(model, device, test_loader, trainset=False)
             experiment.log_metric("test_loss", test_loss, step=epoch)
             test_losses.append(test_loss)
