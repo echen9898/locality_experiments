@@ -11,8 +11,8 @@ args = parser.parse_args()
 
 experiments = {
     1:'20epoch_lr_exps',
-    2:'100epoch_lr_exps',
-    3:'20epoch_randsize_exps',
+    2:'fashion_mnist_usc',
+    3:'fashion_mnisc_sc'
 }
 
 logdir = './results'
@@ -28,10 +28,12 @@ if args.exp_id == 1:
     y_cnn1 = np.load('{}/{}/test_losses.npy'.format(cnn1_path, name))
     y_cnn2 = np.load('{}/{}/test_losses.npy'.format(cnn2_path, name))
 
-    plt.plot(x, y_fc, label='fc')
-    plt.plot(x, y_cnn1, label='cnn')
-    plt.plot(x, y_cnn2, label='cnn maxpool')
-    plt.title('Fashion MNIST Color Estimation')
+    plt.plot(x, y_fc, label='Fully connected')
+    plt.plot(x, y_cnn1, label='CNN')
+    plt.plot(x, y_cnn2, label='CNN maxpool')
+    plt.title('Color Estimation (Fashion MNIST)')
+    plt.xlabel('Epoch')
+    plt.ylabel('Test Loss')
     plt.legend()
     plt.show()
 
@@ -46,10 +48,26 @@ elif args.exp_id == 2:
     y_cnn1 = np.load('{}/{}/test_losses.npy'.format(cnn1_path, name))
     y_cnn2 = np.load('{}/{}/test_losses.npy'.format(cnn2_path, name))
 
-    plt.plot(x, y_fc, label='fc')
-    plt.plot(x, y_cnn1, label='cnn')
-    plt.plot(x, y_cnn2, label='cnn maxpool')
-    plt.title('Fashion MNIST Color Estimation')
+    plt.plot(x, y_fc, label='Fully connected')
+    plt.plot(x, y_cnn1, label='CNN')
+    plt.plot(x, y_cnn2, label='CNN maxpool')
+    plt.title('Color Estimation (Fashion MNIST)')
+    plt.xlabel('Epoch')
+    plt.ylabel('Test Loss')
     plt.ylim(0, 0.00008)
     plt.legend()
     plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
