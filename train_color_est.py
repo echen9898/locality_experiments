@@ -62,6 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('-model', choices=['fc_1', 'cnn_1', 'cnn_2'], type=str, help='Which model to train')
     parser.add_argument('-exp_name', type=str, help='What to name this experiment')
     parser.add_argument('-scramble', action='store_true', help='Whether or not to scramble input images in each batch')
+    parser.add_argument('-fixed_scramble', action='store_true', help='Whether or not to use fixed or random scrambling')
     parser.add_argument('-cuda', action='store_true', help='Whether you are using GPU or CPU')
 
     # fixed across sweeps
@@ -69,7 +70,6 @@ if __name__ == '__main__':
     parser.add_argument('-log', default=False, type=bool, help='Whether or not to log terminal output')
     parser.add_argument('-single_run', default=False, type=bool, help='Whether this is a single run or part of a sweep')
     parser.add_argument('-epochs', default=20, type=int, help='Number of learning epochs')
-    parser.add_argument('-fixed_scramble', default=True, type=bool, help='Whether or not to use fixed or random scrambling')
 
     # variable across sweeps (overridable by Experiment() object)
     parser.add_argument('-lr', default=float(1e-2), type=float, help='The learning rate to use')
@@ -215,10 +215,10 @@ if __name__ == '__main__':
             # Test
             train_loss = test(model, device, train_loader, trainset=True)
             experiment.log_metric("train_loss", train_loss, step=epoch)
-            train_losses.append(train_loss)
+            train_losses.append(train_loss.item())
             test_loss = test(model, device, test_loader, trainset=False)
             experiment.log_metric("test_loss", test_loss, step=epoch)
-            test_losses.append(test_loss)
+            test_losses.append(test_loss.item())
 
         print('\n')
         print('#'*100)

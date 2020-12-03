@@ -32,14 +32,17 @@ class ScrambleImg(object):
     Random scramble - each image is randomly scrambled.
     """
 
-    def __init__(self, fixed_scramble=True):
+    def __init__(self, fixed_scramble=True, dim=28):
         self.fixed_scramble = fixed_scramble
+        self.dim = dim
+        self.scramble_indx = np.arange(self.dim*self.dim)
+        np.random.shuffle(self.scramble_indx)
 
     def __call__(self, pic):
         img = np.array(pic)
         if len(img.shape) == 2: # greyscale
             h, w = img.shape
-            scramble_indx = np.arange(h*w)
+            scramble_indx = self.scramble_indx.copy()
             if self.fixed_scramble == False:
                 np.random.shuffle(scramble_indx)
             img = img.reshape(1, h*w)
@@ -47,7 +50,7 @@ class ScrambleImg(object):
             img = img.reshape(h, w, 1)
         elif len(img.shape) == 3: # RGB
             h, w, _ = img.shape
-            scramble_indx = np.arange(h*w)
+            scramble_indx = self.scramble_indx.copy()
             if self.fixed_scramble == False:
                 np.random.shuffle(scramble_indx)
             scrambled = np.empty((h, w, 3))
