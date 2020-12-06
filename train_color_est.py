@@ -134,11 +134,11 @@ if __name__ == '__main__':
             train_dataset = datasets.FashionMNIST('data', train=True, download=True, transform=transforms_to_apply)
             test_dataset = datasets.FashionMNIST('data', train=False, transform=transforms_to_apply)
         elif args.dataset == 'Cifar10':
-            num_channels = 3
+            num_channels = 1
             if args.scramble:
-                transforms_to_apply = transforms.Compose([transforms.Resize(28), ScrambleImg(fixed_scramble=args.fixed_scramble), transforms.ToTensor()])
+                transforms_to_apply = transforms.Compose([transforms.Resize(28), transforms.Grayscale(), ScrambleImg(fixed_scramble=args.fixed_scramble), transforms.ToTensor()])
             else:
-                transforms_to_apply = transforms.Compose([transforms.Resize(28), transforms.ToTensor()])
+                transforms_to_apply = transforms.Compose([transforms.Resize(28), transforms.Grayscale(), transforms.ToTensor()])
             train_dataset = datasets.CIFAR10('data', train=True, download=True, transform=transforms_to_apply)
             test_dataset = datasets.CIFAR10('data', train=False, transform=transforms_to_apply)
         log_example_img(train_dataset, experiment, num_channels=num_channels, train=True)

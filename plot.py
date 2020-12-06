@@ -36,6 +36,7 @@ regex = re.compile("run_*")
 fc_runs = [run for run in os.listdir(fc_path) if regex.match(run)]
 cnn1_runs = [run for run in os.listdir(cnn1_path) if regex.match(run)]
 cnn2_runs = [run for run in os.listdir(cnn2_path) if regex.match(run)]
+labels = list()
 
 print("FC-1:")
 print(fc_runs)
@@ -51,7 +52,8 @@ sn.lineplot(x='Epoch',
             y='value',
             data=fc_df,
             err_style='band', 
-            ci='sd')
+            ci=99)
+labels.append("Fully connected")
 
 print("CNN-1:")
 print(cnn1_runs)
@@ -67,7 +69,8 @@ sn.lineplot(x='Epoch',
             y='value',
             data=cnn1_df,
             err_style='band', 
-            ci='sd')
+            ci=99)
+labels.append("CNN")
 
 print("CNN-2:")
 print(cnn2_runs)
@@ -79,13 +82,33 @@ for run in cnn2_runs:
     cnn2_df['{}'.format(run)] = tmp
 cnn2_df = cnn2_df.astype(float)
 cnn2_df = pd.melt(cnn2_df, ['Epoch'])
-
 sn.lineplot(x='Epoch', 
             y='value',
             data=cnn2_df,
             err_style='band', 
-            ci='sd')
+            ci=99)
+labels.append("CNN maxpool")
 
+# print("CNN-2:")
+# cnn3_path = './results/FashionMNIST/scrambled/cnn_2/mnist_scrambled'
+# cnn3_df = pd.DataFrame({'Epoch':x})
+# cnn3_runs = [run for run in os.listdir(cnn3_path) if regex.match(run)]
+# for run in cnn3_runs:
+#     run_path = cnn3_path + '/{}'.format(run)
+#     tmp = np.load(run_path + '/{}_losses.npy'.format(args.loss), allow_pickle=True)
+#     for i in range(len(tmp)):
+#         tmp[i] = tmp[i].item()
+#     cnn3_df['{}'.format(run)] = tmp
+# cnn3_df = cnn3_df.astype(float)
+# cnn3_df = pd.melt(cnn3_df, ['Epoch'])
+# sn.lineplot(x='Epoch', 
+#             y='value',
+#             data=cnn3_df,
+#             err_style='band', 
+#             ci=99)
+# labels.append("CNN maxpool scrambled")
+
+plt.legend(labels=labels)
 plt.ylim(0.0, 0.0001)
 plt.ylabel('Test loss')
 
